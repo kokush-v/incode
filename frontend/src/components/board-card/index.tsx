@@ -3,8 +3,9 @@ import { Divider, Heading, IconButton } from "@chakra-ui/react";
 import { Reorder, motion, useDragControls, useMotionValue } from "framer-motion";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { moveItem } from "../../redux/slice";
+import { moveItem } from "../../redux/taskSlice";
 import { Task } from "../../types";
+import { useRaisedShadow } from "../../utils";
 
 interface CardProps {
 	constraintsRef: React.RefObject<HTMLDivElement>;
@@ -17,19 +18,21 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 	const [drag, setDrag] = useState(false);
 	const controls = useDragControls();
 	const y = useMotionValue(0);
+	const boxShadow = useRaisedShadow(y);
 	const dispatch = useDispatch();
 
 	return (
 		<Reorder.Item
 			value={task}
 			id={task.id.toString()}
-			style={{ y }}
 			dragListener={false}
+			style={{ y, boxShadow }}
 			dragControls={controls}>
 			<motion.div
 				dragSnapToOrigin={column.current?.id === lastColumn.current?.id}
 				drag={drag}
-				className="w-[400px] h-auto p-4 z-10 cursor-grab"
+				style={{ zIndex: drag ? 10000 : 10, position: "relative" }}
+				className="h-auto cursor-grab"
 				dragConstraints={column}
 				dragElastic={1}
 				dragMomentum={false}
@@ -78,7 +81,7 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 
 					if (!column?.current?.id || lastColumn.current?.id === column.current?.id) return;
 
-					dispatch(moveItem({ column: column.current.id, data: task }));
+					dispatch(moveItem({ data: { ...task, type: column.current.id } }));
 				}}
 				onMouseDown={(event) => {
 					event.currentTarget.style.cursor = "grabbing";
@@ -87,12 +90,20 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 					event.currentTarget.style.cursor = "grab";
 				}}
 				dragTransition={{ bounceStiffness: 1000, bounceDamping: 100 }}>
-				<div className="p-3 bg-slate-700 h-[200px] text-white text-center text-2xl leading-[100px] rounded-md flex justify-between items-start ">
+				<div className="p-4 bg-[#fff] drop-shadow-xl h-[200px] text-black text-center text-2xl leading-[100px] rounded-md flex justify-between items-start ">
 					<div className="w-full h-full flex flex-col">
 						<div className="flex flex-col items-start w-full h-full">
-							<Heading size={"md"}>{task.title}</Heading>
-							<Divider className="w-full my-2" />
-							<Heading size={"sm"}>{task.description}</Heading>
+							<Heading fontFamily={"sans-serif"} fontSize={"1.5rem"}>
+								{task.title}
+							</Heading>
+							<Divider className="w-full my-2" borderColor={"#000000cc"} />
+							<Heading
+								fontFamily={"sans-serif"}
+								fontWeight={"300"}
+								textAlign={"left"}
+								size={"sm"}>
+								{task.description}
+							</Heading>
 						</div>
 						<div className="flex h-min w-min">
 							<IconButton variant={""} aria-label="" icon={<DeleteIcon />} />

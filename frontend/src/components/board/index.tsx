@@ -1,6 +1,8 @@
-import { useRef } from "react";
+import { Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import { BoardColumnId } from "../../enums";
 import BoardColumn from "../board-column";
+import TaskFormComponent from "../forms/task-form";
 
 const Board = () => {
 	const refs = {
@@ -8,24 +10,39 @@ const Board = () => {
 		inProgressColumn: useRef(null),
 		doneColumn: useRef(null),
 	};
+	const [columnId, setColumnId] = useState<string>("todoColumn");
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
-		<div className="border-gray-500  border-[1px] min-h-[90vh] p-3 flex justify-around relative">
+		<div className="min-h-[100vh] p-3 flex justify-around relative">
 			<BoardColumn
+				modalOpen={onOpen}
+				setColumnId={setColumnId}
 				title="To do"
 				columnId={BoardColumnId.TODO}
 				constraintsRef={refs[BoardColumnId.TODO]}
 			/>
 			<BoardColumn
+				modalOpen={onOpen}
+				setColumnId={setColumnId}
 				title="In progress"
 				columnId={BoardColumnId.IN_PROGRESS}
 				constraintsRef={refs[BoardColumnId.IN_PROGRESS]}
 			/>
 			<BoardColumn
+				modalOpen={onOpen}
+				setColumnId={setColumnId}
 				title="Done"
 				columnId={BoardColumnId.DONE}
 				constraintsRef={refs[BoardColumnId.DONE]}
 			/>
+
+			<Modal isOpen={isOpen} onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<TaskFormComponent columnId={columnId} onClose={onClose} />
+				</ModalContent>
+			</Modal>
 		</div>
 	);
 };

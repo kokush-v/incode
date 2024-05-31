@@ -1,0 +1,21 @@
+export const BACKEND_KEYS = {
+	SERVER_URL: "http://127.0.0.1:3001",
+	API_VERSION: "/api/v1",
+	TASK: {
+		ROOT: "task",
+		CREATE: "task/create",
+	},
+	BOARD: {
+		ROOT: "board",
+		CREATE: "board/create",
+	},
+};
+
+export const STORAGE_KEYS = {
+	JWT_TOKEN_STUDENT: "JWT_TOKEN_STUDENT",
+	JWT_TOKEN_INSTRUCTOR: "JWT_TOKEN_INSTRUCTOR",
+	ADDRESS: "ADDRESS",
+	AUTH_TOKEN: "AUTH-TOKEN",
+};
+
+export const BACKEND_FULL_URL = BACKEND_KEYS.SERVER_URL + BACKEND_KEYS.API_VERSION;
