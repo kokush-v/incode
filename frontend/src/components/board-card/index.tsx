@@ -2,24 +2,40 @@ import { DeleteIcon, DragHandleIcon, EditIcon } from "@chakra-ui/icons";
 import { Divider, Heading, IconButton } from "@chakra-ui/react";
 import { Reorder, motion, useDragControls, useMotionValue } from "framer-motion";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { moveItem } from "../../redux/taskSlice";
-import { Task } from "../../types";
+import { useDispatch, useSelector } from "react-redux";
+import { FormType } from "../../enums";
+import { useDeleteTaskMutation, useUpdateTaskMutation } from "../../redux/api/taskApi";
+import { boardSelector } from "../../redux/selectors";
+import { setData } from "../../redux/slice/taskFormSlice";
+import { moveItem } from "../../redux/slice/taskSlice";
+import { Task } from "../../types/task";
 import { useRaisedShadow } from "../../utils";
 
 interface CardProps {
 	constraintsRef: React.RefObject<HTMLDivElement>;
 	task: Task;
+	modalOpen: () => void;
 }
 
-const Card = ({ constraintsRef, task }: CardProps) => {
+const Card = ({ constraintsRef, task, modalOpen }: CardProps) => {
 	const [column, setColumn] = useState(constraintsRef);
 	const [lastColumn, setLastColumn] = useState(constraintsRef);
 	const [drag, setDrag] = useState(false);
+
 	const controls = useDragControls();
 	const y = useMotionValue(0);
-	const boxShadow = useRaisedShadow(y);
 	const dispatch = useDispatch();
+	const boxShadow = useRaisedShadow(y);
+	const boardId = useSelector(boardSelector)?.id as number;
+	const [updateItem] = useUpdateTaskMutation();
+	const [deleteItem] = useDeleteTaskMutation();
+
+	const moveCard = (task: Task) => {
+		dispatch(moveItem({ data: task }));
+		if (boardId) {
+			updateItem({ ...task, boardId });
+		}
+	};
 
 	return (
 		<Reorder.Item
@@ -31,7 +47,7 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 			<motion.div
 				dragSnapToOrigin={column.current?.id === lastColumn.current?.id}
 				drag={drag}
-				style={{ zIndex: drag ? 10000 : 10, position: "relative" }}
+				style={{ zIndex: drag ? 100 : 10, position: "relative" }}
 				className="h-auto cursor-grab"
 				dragConstraints={column}
 				dragElastic={1}
@@ -81,7 +97,7 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 
 					if (!column?.current?.id || lastColumn.current?.id === column.current?.id) return;
 
-					dispatch(moveItem({ data: { ...task, type: column.current.id } }));
+					moveCard({ ...task, type: column.current?.id });
 				}}
 				onMouseDown={(event) => {
 					event.currentTarget.style.cursor = "grabbing";
@@ -106,8 +122,23 @@ const Card = ({ constraintsRef, task }: CardProps) => {
 							</Heading>
 						</div>
 						<div className="flex h-min w-min">
-							<IconButton variant={""} aria-label="" icon={<DeleteIcon />} />
-							<IconButton variant={""} aria-label="" icon={<EditIcon />} />
+							<IconButton
+								onClick={() => {
+									deleteItem(task.id);
+								}}
+								variant={""}
+								aria-label=""
+								icon={<DeleteIcon />}
+							/>
+							<IconButton
+								onClick={() => {
+									modalOpen();
+									dispatch(setData({ type: FormType.EDIT, form: { boardId, ...task } }));
+								}}
+								variant={""}
+								aria-label=""
+								icon={<EditIcon />}
+							/>
 						</div>
 					</div>
 					<IconButton

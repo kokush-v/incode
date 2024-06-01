@@ -14,7 +14,7 @@ const Board = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
-		<div className="min-h-[100vh] p-3 flex justify-around relative">
+		<div className="p-3 flex justify-around relative">
 			<BoardColumn
 				modalOpen={onOpen}
 				setColumnId={setColumnId}

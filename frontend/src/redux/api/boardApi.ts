@@ -1,8 +1,9 @@
 /* eslint-disable no-empty */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { APP_KEYS } from "../../consts";
-import { Board, BoardForm } from "../../types";
-import { setBoard } from "../boardSlice";
+import { Board, BoardCreateForm, BoardUpdateForm } from "../../types/board";
+import { setBoard } from "../slice/boardSlice";
+import { taskApi } from "./taskApi";
 
 export const boardApi = createApi({
 	reducerPath: "boardApi",
@@ -11,11 +12,11 @@ export const boardApi = createApi({
 	}),
 	tagTypes: ["Board"],
 	endpoints: (builder) => ({
-		getBoard: builder.query<Board, null>({
+		getBoard: builder.query<Board, number>({
 			providesTags: ["Board"],
-			query() {
+			query(id) {
 				return {
-					url: APP_KEYS.BACKEND_KEYS.BOARD.ROOT,
+					url: APP_KEYS.BACKEND_KEYS.BOARD.ROOT(id),
 					credentials: "include",
 				};
 			},
@@ -23,11 +24,12 @@ export const boardApi = createApi({
 				try {
 					const { data } = await queryFulfilled;
 					dispatch(setBoard({ board: data }));
+					dispatch(taskApi.endpoints.getTasks.initiate(data.id));
 				} catch (error) {}
 			},
 		}),
 
-		createBoard: builder.mutation<Board, BoardForm>({
+		createBoard: builder.mutation<Board, BoardCreateForm>({
 			invalidatesTags: ["Board"],
 			query(data) {
 				return {
@@ -37,13 +39,22 @@ export const boardApi = createApi({
 				};
 			},
 			async onQueryStarted(_args, { dispatch, queryFulfilled }) {
-				try {
-					const { data } = await queryFulfilled;
-					dispatch(setBoard({ board: data }));
-				} catch (error) {}
+				const { data } = await queryFulfilled;
+				dispatch(boardApi.endpoints.getBoard.initiate(data.id, { forceRefetch: true }));
+			},
+		}),
+
+		updateBoard: builder.mutation<Board, BoardUpdateForm>({
+			invalidatesTags: ["Board"],
+			query(data) {
+				return {
+					url: APP_KEYS.BACKEND_KEYS.BOARD.UPDATE,
+					method: "PUT",
+					body: data,
+				};
 			},
 		}),
 	}),
 });
 
-export const { useCreateBoardMutation, useGetBoardQuery } = boardApi;
+export const { useCreateBoardMutation, useUpdateBoardMutation, useLazyGetBoardQuery } = boardApi;

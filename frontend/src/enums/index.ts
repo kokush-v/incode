@@ -3,3 +3,8 @@ export enum BoardColumnId {
 	IN_PROGRESS = "inProgressColumn",
 	DONE = "doneColumn",
 }
+
+export enum FormType {
+	NEW = "NEW",
+	EDIT = "EDIT",
+}

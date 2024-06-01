@@ -11,28 +11,49 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useCreateBoardMutation } from "../../../redux/api/boardApi";
-import { BoardForm } from "../../../types";
-import { showSuccesToast } from "../form.toast";
+import { useSelector } from "react-redux";
+import { FormType } from "../../../enums";
+import { useCreateBoardMutation, useUpdateBoardMutation } from "../../../redux/api/boardApi";
+import { boardSelector } from "../../../redux/selectors";
+import { Board, BoardCreateForm, BoardUpdateForm } from "../../../types/board";
+import { showErrorToastWithText, showSuccesToast } from "../form.toast";
 
 interface BoardFormProps {
 	onClose: () => void;
+	formType: FormType;
 }
 
-const BoardFormComponent = ({ onClose }: BoardFormProps) => {
+const BoardFormComponent = ({ onClose, formType }: BoardFormProps) => {
 	const toast = useToast();
 	const [createBoardMutatuon] = useCreateBoardMutation();
+	const [updateBoardMutation] = useUpdateBoardMutation();
+	const board = useSelector(boardSelector);
 
-	const formik = useFormik<BoardForm>({
-		initialValues: { name: "" },
-		onSubmit: async (value) => {
+	const sumbitFuncs = {
+		[FormType.NEW]: async (value: BoardCreateForm) => {
 			try {
-				createBoardMutatuon(value);
+				await createBoardMutatuon(value).unwrap();
 				showSuccesToast(toast, "Board created");
 				onClose();
 			} catch (error) {
-				console.log(error);
+				showErrorToastWithText(toast, "Board may already exist");
 			}
+		},
+		[FormType.EDIT]: async (value: BoardUpdateForm) => {
+			try {
+				await updateBoardMutation(value).unwrap();
+				showSuccesToast(toast, "Board updated");
+				onClose();
+			} catch (error) {
+				showErrorToastWithText(toast, "Error while updating");
+			}
+		},
+	};
+
+	const formik = useFormik<BoardUpdateForm>({
+		initialValues: (formType === FormType.EDIT ? board : { id: -1, name: "" }) as Board,
+		onSubmit: (values) => {
+			sumbitFuncs[formType](values);
 		},
 	});
 
@@ -61,7 +82,7 @@ const BoardFormComponent = ({ onClose }: BoardFormProps) => {
 							colorScheme="purple"
 							width="fit-content"
 							alignSelf={"center"}>
-							Create
+							{formType === FormType.NEW ? "Create" : "Update"}
 						</Button>
 					</VStack>
 				</form>

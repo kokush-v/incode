@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {
 	Box,
 	Button,
@@ -13,10 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { useAddTaskMutation } from "../../../redux/api/taskApi";
-import { boardSelector } from "../../../redux/selectors";
-import { Board, TaskForm } from "../../../types";
-import { showSuccesToast } from "../form.toast";
+import { FormType } from "../../../enums";
+import { useAddTaskMutation, useUpdateTaskMutation } from "../../../redux/api/taskApi";
+import { boardSelector, taskFormSelector } from "../../../redux/selectors";
+import { Board } from "../../../types/board";
+import { CreateTaskForm, UpdateTaskForm } from "../../../types/task";
+import { showErrorToastWithText, showSuccesToast } from "../form.toast";
 
 interface TaskFormProps {
 	columnId: string;
@@ -27,17 +30,42 @@ const TaskFormComponent = ({ columnId, onClose }: TaskFormProps) => {
 	const toast = useToast();
 	const board = useSelector(boardSelector) as Board;
 	const [addTaskMutation] = useAddTaskMutation();
+	const [updateTaskMutation] = useUpdateTaskMutation();
+	const { form: initData, type: formType } = useSelector(taskFormSelector);
 
-	const formik = useFormik<TaskForm>({
-		initialValues: { description: "", title: "", type: columnId, boardId: board.id },
-		onSubmit: async (value) => {
+	const sumbitFuncs = {
+		[FormType.NEW]: async (value: CreateTaskForm) => {
 			try {
-				addTaskMutation(value);
-				showSuccesToast(toast, "Task added");
+				await addTaskMutation(value).unwrap();
+				showSuccesToast(toast, "Card created");
 				onClose();
 			} catch (error) {
-				console.log(error);
+				showErrorToastWithText(toast, "Error while creating");
 			}
+		},
+		[FormType.EDIT]: async (value: UpdateTaskForm) => {
+			try {
+				await updateTaskMutation(value).unwrap();
+				showSuccesToast(toast, "Card updated");
+				onClose();
+			} catch (error) {
+				showErrorToastWithText(toast, "Error while updating");
+			}
+		},
+	};
+
+	const formik = useFormik<UpdateTaskForm>({
+		initialValues: (formType === FormType.EDIT
+			? initData
+			: {
+					id: "",
+					description: "",
+					title: "",
+					type: columnId,
+					boardId: board.id,
+			  }) as UpdateTaskForm,
+		onSubmit: (values) => {
+			sumbitFuncs[formType](values);
 		},
 	});
 
@@ -78,7 +106,7 @@ const TaskFormComponent = ({ columnId, onClose }: TaskFormProps) => {
 							colorScheme="purple"
 							width="fit-content"
 							alignSelf={"center"}>
-							Add
+							{formType === FormType.NEW ? "Add" : "Update"}
 						</Button>
 					</VStack>
 				</form>

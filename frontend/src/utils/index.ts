@@ -1,5 +1,6 @@
 import { animate, MotionValue, useMotionValue } from "framer-motion";
 import { useEffect } from "react";
+import { APP_KEYS } from "../consts";
 
 const inactiveShadow = "0px 0px 0px rgba(0,0,0,0.8)";
 
@@ -26,3 +27,12 @@ export function useRaisedShadow(value: MotionValue<number>) {
 
 	return boxShadow;
 }
+
+export const getBoardId = () => {
+	const boardId = parseInt(localStorage.getItem(APP_KEYS.STORAGE_KEYS.BOARD_ID) || "");
+	if (!Number.isNaN(boardId)) {
+		return boardId;
+	} else {
+		return "";
+	}
+};

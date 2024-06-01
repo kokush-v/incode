@@ -2,10 +2,11 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Heading, IconButton } from "@chakra-ui/react";
 import { Reorder } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { BoardColumnId } from "../../enums";
+import { BoardColumnId, FormType } from "../../enums";
 import { taskSelector } from "../../redux/selectors";
-import { reorderItems } from "../../redux/taskSlice";
-import { Task } from "../../types";
+import { setData } from "../../redux/slice/taskFormSlice";
+import { reorderItems } from "../../redux/slice/taskSlice";
+import { Task, UpdateTaskForm } from "../../types/task";
 import Card from "../board-card";
 
 interface BoardColumnProps {
@@ -42,6 +43,7 @@ const BoardColumn = ({
 					icon={<AddIcon />}
 					onClick={() => {
 						setColumnId(columnId);
+						dispatch(setData({ type: FormType.NEW, form: {} as UpdateTaskForm }));
 						modalOpen();
 					}}
 				/>
@@ -56,7 +58,12 @@ const BoardColumn = ({
 				className="p-4 flex flex-col gap-5 board-column"
 				values={tasks}>
 				{tasks.map((item) => (
-					<Card key={item.id} constraintsRef={constraintsRef} task={item} />
+					<Card
+						modalOpen={modalOpen}
+						key={item.id}
+						constraintsRef={constraintsRef}
+						task={item}
+					/>
 				))}
 			</Reorder.Group>
 		</div>

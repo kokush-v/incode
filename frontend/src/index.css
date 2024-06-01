@@ -2,8 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+#root {
 	overflow: auto;
+	background: rgb(129, 238, 240);
+	background: linear-gradient(
+		339deg,
+		rgba(129, 238, 240, 1) 8%,
+		rgba(221, 129, 252, 1) 40%,
+		rgba(255, 164, 218, 1) 62%,
+		rgba(39, 210, 173, 1) 100%
+	);
 }
 
 header {
@@ -19,15 +27,7 @@ header {
 }
 
 .app {
-	background: rgb(129, 238, 240);
-	background: linear-gradient(
-		339deg,
-		rgba(129, 238, 240, 1) 8%,
-		rgba(221, 129, 252, 1) 40%,
-		rgba(255, 164, 218, 1) 62%,
-		rgba(39, 210, 173, 1) 100%
-	);
-
+	background-attachment: fixed;
 	font-family: "Reddit Mono", monospace;
 	font-optical-sizing: auto;
 	font-weight: 400;

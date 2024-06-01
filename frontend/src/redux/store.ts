@@ -2,8 +2,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { boardApi } from "./api/boardApi";
 import { taskApi } from "./api/taskApi";
-import boardSlice from "./boardSlice";
-import taskSlice from "./taskSlice";
+import boardSlice from "./slice/boardSlice";
+import formSlice from "./slice/taskFormSlice";
+import taskSlice from "./slice/taskSlice";
 
 const store = configureStore({
 	reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
 		[taskApi.reducerPath]: taskApi.reducer,
 		taskSlice,
 		boardSlice,
+		formSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({}).concat([boardApi.middleware, taskApi.middleware]),

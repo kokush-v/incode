@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Board } from "../types";
+import { APP_KEYS } from "../../consts";
+import { Board } from "../../types/board";
 
 interface AddBoardPayload {
 	board: Board;
@@ -17,6 +18,7 @@ const boardSlice = createSlice({
 	initialState: initial,
 	reducers: {
 		setBoard: (state, { payload }: PayloadAction<AddBoardPayload>) => {
+			localStorage.setItem(APP_KEYS.STORAGE_KEYS.BOARD_ID, payload.board.id.toString());
 			state.board = payload.board;
 		},
 	},
