@@ -13,3 +13,8 @@ export class CreateTask {
 	@IsNotEmpty()
 	type: string;
 }
+
+export class UpdateTask extends CreateTask {
+	@IsNotEmpty()
+	id: number;
+}

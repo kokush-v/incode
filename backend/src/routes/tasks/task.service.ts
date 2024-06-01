@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { CreateTask } from "./task.dto";
+import { CreateTask, UpdateTask } from "./task.dto";
 
 @Injectable()
 export class TaskService {
@@ -13,8 +13,25 @@ export class TaskService {
 		type: true,
 	};
 
-	async getMany() {
-		return this.taskRepository.findMany({ select: this.taskSelectProperties });
+	async getMany(id: number) {
+		return this.taskRepository.findMany({
+			where: { boardId: id },
+			select: this.taskSelectProperties,
+		});
+	}
+
+	async update({ id, title, description, type }: UpdateTask) {
+		return this.taskRepository.update({
+			where: { id },
+			data: { title, description, type },
+			select: this.taskSelectProperties,
+		});
+	}
+
+	async delete(id: number) {
+		return this.taskRepository.delete({
+			where: { id },
+		});
 	}
 
 	async create({ title, description, boardId, type }: CreateTask) {
