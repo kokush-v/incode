@@ -109,28 +109,17 @@ const Card = ({ constraintsRef, task, modalOpen }: CardProps) => {
 				<div className="p-4 bg-[#fff] drop-shadow-xl h-[200px] text-black text-center text-2xl leading-[100px] rounded-md flex justify-between items-start ">
 					<div className="w-full h-full flex flex-col">
 						<div className="flex flex-col items-start w-full h-full">
-							<Heading fontFamily={"sans-serif"} fontSize={"1.5rem"}>
+							<Heading fontFamily={"sans-serif"} fontSize={"1.2rem"}>
 								{task.title}
 							</Heading>
 							<Divider className="w-full my-2" borderColor={"#000000cc"} />
-							<Heading
-								fontFamily={"sans-serif"}
-								fontWeight={"300"}
-								textAlign={"left"}
-								size={"sm"}>
+							<Heading className="text-zinc-400" textAlign={"left"} size={"sm"}>
 								{task.description}
 							</Heading>
 						</div>
 						<div className="flex h-min w-min">
 							<IconButton
-								onClick={() => {
-									deleteItem(task.id);
-								}}
-								variant={""}
-								aria-label=""
-								icon={<DeleteIcon />}
-							/>
-							<IconButton
+								className="text-zinc-400"
 								onClick={() => {
 									modalOpen();
 									dispatch(setData({ type: FormType.EDIT, form: { boardId, ...task } }));
@@ -138,6 +127,15 @@ const Card = ({ constraintsRef, task, modalOpen }: CardProps) => {
 								variant={""}
 								aria-label=""
 								icon={<EditIcon />}
+							/>
+							<IconButton
+								onClick={() => {
+									deleteItem(task.id);
+								}}
+								color={"red.400"}
+								variant={""}
+								aria-label=""
+								icon={<DeleteIcon />}
 							/>
 						</div>
 					</div>

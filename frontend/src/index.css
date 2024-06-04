@@ -26,6 +26,10 @@ header {
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.294);
 }
 
+.board-column {
+	transition: all 0.3s linear;
+}
+
 .app {
 	background-attachment: fixed;
 	font-family: "Reddit Mono", monospace;

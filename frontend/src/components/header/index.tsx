@@ -1,14 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AddIcon, EditIcon, Search2Icon } from "@chakra-ui/icons";
-import {
-	HStack,
-	Heading,
-	IconButton,
-	Input,
-	InputGroup,
-	InputLeftElement,
-	Kbd,
-} from "@chakra-ui/react";
+import { HStack, Heading, IconButton, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { Kbd } from "@nextui-org/kbd";
 import { useState } from "react";
 import { APP_KEYS } from "../../consts";
 import { FormType } from "../../enums";
@@ -47,7 +40,7 @@ const Header = ({ modalOpen, refetch, setFormType }: HeaderProps) => {
 					onChange={(e) => setBoardId(e.target.value)}
 					onKeyDown={sendGetBoardQuery}
 				/>
-				<Kbd opacity={0.7}>Enter ↵</Kbd>
+				<Kbd keys={["enter"]}>Enter</Kbd>
 			</InputGroup>
 			<HStack>
 				<IconButton
