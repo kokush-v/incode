@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This project is a test project for Incode. It includes an application for task management similar to Trello. The frontend is built with React.js, and the backend uses Nest.js. MySQL is used as the database.
+This project is a test project for Incode. It includes an application for task management similar to Trello. The frontend is built with React.js, and the backend uses Nest.js. MongoDB is used as the database.
 
 ## Usage and Installation
 
@@ -52,7 +52,7 @@ After completing these steps, you can access the application in your browser at 
 
 - **Frontend:** React.js
 - **Backend:** Nest.js
-- **Database:** MySQL
+- **Database:** MongoDB
 
 ## License
 
