@@ -12,11 +12,11 @@ export const boardApi = createApi({
 	}),
 	tagTypes: ["Board"],
 	endpoints: (builder) => ({
-		getBoard: builder.query<Board, number>({
+		getBoard: builder.query<Board, string>({
 			providesTags: ["Board"],
-			query(id) {
+			query(name) {
 				return {
-					url: APP_KEYS.BACKEND_KEYS.BOARD.ROOT(id),
+					url: APP_KEYS.BACKEND_KEYS.BOARD.ROOT(name),
 					credentials: "include",
 				};
 			},
@@ -40,7 +40,7 @@ export const boardApi = createApi({
 			},
 			async onQueryStarted(_args, { dispatch, queryFulfilled }) {
 				const { data } = await queryFulfilled;
-				dispatch(boardApi.endpoints.getBoard.initiate(data.id, { forceRefetch: true }));
+				dispatch(boardApi.endpoints.getBoard.initiate(data.name, { forceRefetch: true }));
 			},
 		}),
 

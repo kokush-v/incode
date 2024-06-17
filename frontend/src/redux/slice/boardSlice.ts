@@ -18,7 +18,7 @@ const boardSlice = createSlice({
 	initialState: initial,
 	reducers: {
 		setBoard: (state, { payload }: PayloadAction<AddBoardPayload>) => {
-			localStorage.setItem(APP_KEYS.STORAGE_KEYS.BOARD_ID, payload.board.id.toString());
+			localStorage.setItem(APP_KEYS.STORAGE_KEYS.BOARD_NAME, payload.board.name);
 			state.board = payload.board;
 		},
 	},

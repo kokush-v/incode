@@ -16,8 +16,8 @@ export class BoardController {
 		return this.boardService.update(taskBody);
 	}
 
-	@Get(":id")
-	async getOne(@Param("id") id: string) {
-		return this.boardService.getOne(parseInt(id));
+	@Get(":name")
+	async getOne(@Param("name") name: string) {
+		return this.boardService.getOne(name);
 	}
 }

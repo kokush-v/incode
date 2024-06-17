@@ -28,11 +28,6 @@ export function useRaisedShadow(value: MotionValue<number>) {
 	return boxShadow;
 }
 
-export const getBoardId = () => {
-	const boardId = parseInt(localStorage.getItem(APP_KEYS.STORAGE_KEYS.BOARD_ID) || "");
-	if (!Number.isNaN(boardId)) {
-		return boardId;
-	} else {
-		return "";
-	}
+export const getBoardName = () => {
+	return localStorage.getItem(APP_KEYS.STORAGE_KEYS.BOARD_NAME) || "";
 };

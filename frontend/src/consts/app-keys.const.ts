@@ -1,5 +1,8 @@
 export const BACKEND_KEYS = {
-	SERVER_URL: "http://127.0.0.1:3001",
+	SERVER_URL:
+		process.env.REACT_APP_NODE_ENV === "dev"
+			? "http://127.0.0.1:3001"
+			: process.env.REACT_APP_CLIENT_URL,
 	API_VERSION: "/api/v1",
 	TASK: {
 		ROOT: (id: number) => `task/${id}`,
@@ -8,14 +11,14 @@ export const BACKEND_KEYS = {
 		DELETE: (id: number) => `task/delete/${id}`,
 	},
 	BOARD: {
-		ROOT: (id: number) => `board/${id}`,
+		ROOT: (id: string) => `board/${id}`,
 		CREATE: "board/create",
 		UPDATE: "board/update",
 	},
 };
 
 export const STORAGE_KEYS = {
-	BOARD_ID: "boardId",
+	BOARD_NAME: "boardName",
 };
 
 export const BACKEND_FULL_URL = BACKEND_KEYS.SERVER_URL + BACKEND_KEYS.API_VERSION;

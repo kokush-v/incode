@@ -18,11 +18,11 @@ export class TaskController {
 
 	@Delete("delete/:id")
 	async delete(@Param("id") id: string) {
-		return this.taskService.delete(parseInt(id));
+		return this.taskService.delete(id);
 	}
 
 	@Get("/:id")
 	async getAll(@Param("id") id: string) {
-		return this.taskService.getMany(parseInt(id));
+		return this.taskService.getMany(id);
 	}
 }

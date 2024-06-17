@@ -2,7 +2,7 @@ import { IsNotEmpty } from "class-validator";
 
 export class CreateTask {
 	@IsNotEmpty()
-	boardId: number;
+	boardId: string;
 
 	@IsNotEmpty()
 	title: string;
@@ -16,5 +16,5 @@ export class CreateTask {
 
 export class UpdateTask extends CreateTask {
 	@IsNotEmpty()
-	id: number;
+	id: string;
 }
