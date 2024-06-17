@@ -1,5 +1,8 @@
 export const BACKEND_KEYS = {
-	SERVER_URL: "http://127.0.0.1:3001",
+	SERVER_URL:
+		process.env.REACT_APP_NODE_ENV === "dev"
+			? "http://127.0.0.1:3001"
+			: process.env.REACT_APP_CLIENT_URL,
 	API_VERSION: "/api/v1",
 	TASK: {
 		ROOT: (id: number) => `task/${id}`,
