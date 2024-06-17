@@ -5,22 +5,22 @@ import { Kbd } from "@nextui-org/kbd";
 import { useState } from "react";
 import { APP_KEYS } from "../../consts";
 import { FormType } from "../../enums";
-import { getBoardId } from "../../utils";
+import { getBoardName } from "../../utils";
 
 interface HeaderProps {
 	modalOpen: () => void;
-	refetch: (boardId: number) => void;
+	refetch: (boardName: string) => void;
 	setFormType: (formType: FormType) => void;
 }
 
 const Header = ({ modalOpen, refetch, setFormType }: HeaderProps) => {
-	const localStorageBoardId = getBoardId().toString();
-	const [boardId, setBoardId] = useState<string>(localStorageBoardId);
+	const localStorageBoardName = getBoardName().toString();
+	const [boardName, setBoardName] = useState<string>(localStorageBoardName);
 
 	function sendGetBoardQuery(event: React.KeyboardEvent<HTMLInputElement>) {
-		if (event.key === "Enter" && boardId !== localStorageBoardId) {
-			refetch(parseInt(boardId));
-			localStorage.setItem(APP_KEYS.STORAGE_KEYS.BOARD_ID, boardId);
+		if (event.key === "Enter" && boardName !== localStorageBoardName) {
+			refetch(boardName);
+			localStorage.setItem(APP_KEYS.STORAGE_KEYS.BOARD_NAME, boardName);
 		}
 	}
 
@@ -36,8 +36,8 @@ const Header = ({ modalOpen, refetch, setFormType }: HeaderProps) => {
 					variant={"unstyled"}
 					type="text"
 					placeholder="Board ID"
-					value={boardId}
-					onChange={(e) => setBoardId(e.target.value)}
+					value={boardName}
+					onChange={(e) => setBoardName(e.target.value)}
 					onKeyDown={sendGetBoardQuery}
 				/>
 				<Kbd keys={["enter"]}>Enter</Kbd>

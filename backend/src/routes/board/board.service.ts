@@ -11,9 +11,9 @@ export class BoardService {
 		name: true,
 	};
 
-	async getOne(id: number) {
-		return this.boardRepository.findUniqueOrThrow({
-			where: { id },
+	async getOne(name: string) {
+		return this.boardRepository.findFirstOrThrow({
+			where: { name },
 			select: this.boardSelectProperties,
 		});
 	}

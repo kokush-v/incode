@@ -13,9 +13,9 @@ export class TaskService {
 		type: true,
 	};
 
-	async getMany(id: number) {
+	async getMany(boardId: string) {
 		return this.taskRepository.findMany({
-			where: { boardId: id },
+			where: { boardId },
 			select: this.taskSelectProperties,
 		});
 	}
@@ -28,7 +28,7 @@ export class TaskService {
 		});
 	}
 
-	async delete(id: number) {
+	async delete(id: string) {
 		return this.taskRepository.delete({
 			where: { id },
 		});

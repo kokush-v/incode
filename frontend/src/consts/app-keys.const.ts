@@ -8,14 +8,14 @@ export const BACKEND_KEYS = {
 		DELETE: (id: number) => `task/delete/${id}`,
 	},
 	BOARD: {
-		ROOT: (id: number) => `board/${id}`,
+		ROOT: (id: string) => `board/${id}`,
 		CREATE: "board/create",
 		UPDATE: "board/update",
 	},
 };
 
 export const STORAGE_KEYS = {
-	BOARD_ID: "boardId",
+	BOARD_NAME: "boardName",
 };
 
 export const BACKEND_FULL_URL = BACKEND_KEYS.SERVER_URL + BACKEND_KEYS.API_VERSION;

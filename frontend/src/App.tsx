@@ -15,12 +15,12 @@ import Header from "./components/header";
 import { FormType } from "./enums";
 import { useLazyGetBoardQuery } from "./redux/api/boardApi";
 import { boardSelector } from "./redux/selectors";
-import { getBoardId } from "./utils";
+import { getBoardName } from "./utils";
 
 function App() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [refetch, { isFetching, isLoading, isSuccess }] = useLazyGetBoardQuery();
-	const boardId = useSelector(boardSelector)?.id || getBoardId();
+	const boardId = useSelector(boardSelector)?.name || getBoardName();
 	const [formType, setFormType] = useState<FormType>(FormType.NEW);
 
 	useEffect(() => {

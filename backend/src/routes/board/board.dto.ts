@@ -7,5 +7,5 @@ export class CreateBoard {
 
 export class UpdateBoard extends CreateBoard {
 	@IsNotEmpty()
-	id: number;
+	id: string;
 }
