@@ -75,7 +75,7 @@ const TaskFormComponent = ({ columnId, onClose }: TaskFormProps) => {
 				<form onSubmit={formik.handleSubmit}>
 					<VStack spacing={4} align="center">
 						<Heading size={"md"} color="purple" textTransform={"uppercase"}>
-							Add task
+							{formType === FormType.NEW ? "Add" : "Update"} task
 						</Heading>
 						<FormControl isInvalid={!!formik.errors.title && formik.touched.title}>
 							<FormLabel htmlFor="title">Title</FormLabel>

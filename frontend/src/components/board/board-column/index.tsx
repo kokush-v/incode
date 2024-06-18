@@ -2,12 +2,12 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Heading, IconButton } from "@chakra-ui/react";
 import { Reorder } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { BoardColumnId, FormType } from "../../enums";
-import { taskSelector } from "../../redux/selectors";
-import { setData } from "../../redux/slice/taskFormSlice";
-import { reorderItems } from "../../redux/slice/taskSlice";
-import { Task, UpdateTaskForm } from "../../types/task";
-import Card from "../board-card";
+import { BoardColumnId, FormType } from "../../../enums";
+import { taskSelector } from "../../../redux/selectors";
+import { setData } from "../../../redux/slice/taskFormSlice";
+import { reorderItems } from "../../../redux/slice/taskSlice";
+import { Task, UpdateTaskForm } from "../../../types/task";
+import Card from "../../card";
 
 interface BoardColumnProps {
 	title: string;

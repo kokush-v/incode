@@ -63,7 +63,7 @@ const BoardFormComponent = ({ onClose, formType }: BoardFormProps) => {
 				<form onSubmit={formik.handleSubmit}>
 					<VStack spacing={4} align="center">
 						<Heading size={"md"} color="purple" textTransform={"uppercase"}>
-							Create board
+							{formType === FormType.NEW ? "Create" : "Update"} board
 						</Heading>
 						<FormControl isInvalid={!!formik.errors.name && formik.touched.name}>
 							<FormLabel htmlFor="name">Board name</FormLabel>

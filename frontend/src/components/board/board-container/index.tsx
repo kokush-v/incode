@@ -1,8 +1,8 @@
 import { Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { BoardColumnId } from "../../enums";
+import { BoardColumnId } from "../../../enums";
+import TaskFormComponent from "../../forms/task-form";
 import BoardColumn from "../board-column";
-import TaskFormComponent from "../forms/task-form";
 
 const Board = () => {
 	const refs = {

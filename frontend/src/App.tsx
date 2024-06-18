@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Board from "./components/board";
+import Board from "./components/board/board-container";
 import BoardFormComponent from "./components/forms/board-form";
 import Header from "./components/header";
 import { FormType } from "./enums";
